@@ -79,7 +79,7 @@ Now that the data is preprocessed, let us take a look at the heatmap correlation
 Below is the implementation of a KFold function for cross-validating our general additive model (GAM). My GAM was fit with 20 splines in this instance: 
 ```python 
 def DoKFold(X,y,k):
-  PE = []
+  Error = []
   kf = KFold(n_splits=k,shuffle=True,random_state=1234)
   for idxtrain, idxtest in kf.split(X):
     X_train = X[idxtrain,:]
@@ -88,8 +88,8 @@ def DoKFold(X,y,k):
     y_test  = y[idxtest]
     gam = LinearGAM(n_splines=20).gridsearch(X_train, y_train,objective='GCV')
     yhat_test = gam.predict(X_test)
-    PE.append(math.sqrt(mse(y_test,yhat_test)))
-  return 1000*np.mean(PE)
+    Error.append(math.sqrt(mse(y_test,yhat_test)))
+  return np.mean(Error)
 ```
 Below is the output of using a K-Fold cross validation were k = 10 to evaluate the RMSE of the general additive model (GAM). It can be seen from the elaspsed times that GAM can be a pretty computationally expensive method: 
 
