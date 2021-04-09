@@ -94,3 +94,11 @@ def DoKFold(X,y,k):
 Below is the output of using a K-Fold cross validation were k = 10 to evaluate the RMSE of the general additive model (GAM). It can be seen from the elaspsed times that GAM can be a pretty computationally expensive method: 
 
 ![image](https://user-images.githubusercontent.com/55299814/114247227-99bbd280-9962-11eb-900a-0b6bed01a64b.png)
+
+Additionally, I took a look at the residuals from the general additive model applied to our data with 20 splines, with a plot shown below: 
+
+![image](https://user-images.githubusercontent.com/55299814/114247537-5877f280-9963-11eb-9e97-b7d9eb6bfb3a.png)
+
+It can be seen from the plot above that the mean of the residuals that result from the general additive model slightly deviates from 0. Further, when GAM is applied to the dataset, the residuals have a distribution that is skewed right as the median of the distribution is less than the mean of the distribution. 
+## Nadaraya Watson
+
