@@ -1,8 +1,12 @@
 # GAM vs Nadaraya-Watson Kernel Density Estimation 
 
+Both models are non-parametric contrasting with  techniques such as linear regression which are parametric. Parametric regressions like linear regression incorporate certain assumptions about the data. When a parametric technique is used with data that does not conform to its assumptions, the result of the analysis may be a weak or biased model. Nonparametric regressions on the other hand relaxes assumptions of linearity, enabling the detection and observation of patterns that parametric techniques may miss.
+
 ## GAM (General Additive Model)
 
-GAM is a generalized from of the linear model, in which predicted values are predicted using a smoothing functions of the features. GAM blends the properties of generalized linear models and additive models. 
+Generalized Additive Models (GAMs) are an extension of Generalized Linear Models in such a way that predictor variables can be modeled non-parametrically in addition to linear and polynomial terms for other predictors. GAM is a generalized form of the linear model, in which predicted values are predicted using a smoothing functions of the features. GAM blends the properties of generalized linear models and additive models. GAM draws benefits from using principles of generalized linear models while also gaining the benefits of additive models in which simple terms of the linear regression equation can be replaced with more complex smoothing functions.
+
+GAMs are useful when the relationship between the variables are expected to be of a more complex form and not easily fitted by standard linear or non-linear models. The main advantage of GAM is its ability to model highly complex nonlinear relationships when the number of potential predictors (features) is large. Conversely, the main disadvantage of GAM is its computational complexity; like other nonparametric methods, GAM has a high propensity for overfitting.
 
 ## Nadaraya-Watson Kernel Density Estimation 
 
