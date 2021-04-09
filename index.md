@@ -40,7 +40,57 @@ Where:
 
 Ultimately, Nadaraya–Watson estimator can be seen as a weighted average of Y1,…,Yn by means of the set of weights {Wi(x)}ni=1 (they always add to one). The set of varying weights depends on the evaluation point x. That means that the Nadaraya–Watson estimator is a local mean of Y1,…,Yn about X=x 
 
-## Evaluation 
+# Evaluation 
 
 We will be applying the two different models on our dataset in which we are trying to predict RMSD (size of residue) using the f(1),f(2),f(3),...,f(9) variables as features. To evaluate the performance of the two different models, I looked at each model's Root Mean Squared Error and the coefficient of determination (R^2 value). 
 
+Before we start, the basic imports:
+```python 
+import time
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import math
+from sklearn.metrics import mean_squared_error as mse
+from sklearn.datasets import make_regression
+from sklearn.model_selection import train_test_split as tts
+from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import StandardScaler, PolynomialFeatures
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import KFold
+from sklearn.metrics import r2_score as R2
+from pygam import LinearGAM
+```
+Additionally, importing the data as well as data preprocessing shown below:
+```python 
+df = pd.read_csv('CASP.csv')
+features = ['F1','F2','F3','F4','F5','F6','F7','F8','F9']
+X = np.array(df[features])
+y = np.array(df['RMSD']).reshape(-1,1)
+```
+
+Now that the data is preprocessed, let us take a look at the heatmap correlation matrix showing the deeper relationship between the different features we will be using in our model to predict RMSD. The correlation matrix below reveals strong multicolinearity among the different features.
+
+![image](https://user-images.githubusercontent.com/55299814/114244074-cae4d480-995b-11eb-8054-8bd78f2c6164.png)
+
+## GAM: 
+
+Below is the implementation of a KFold function for cross-validating our general additive model (GAM). My GAM was fit with 20 splines in this instance: 
+```python 
+def DoKFold(X,y,k):
+  PE = []
+  kf = KFold(n_splits=k,shuffle=True,random_state=1234)
+  for idxtrain, idxtest in kf.split(X):
+    X_train = X[idxtrain,:]
+    y_train = y[idxtrain]
+    X_test  = X[idxtest,:]
+    y_test  = y[idxtest]
+    gam = LinearGAM(n_splines=20).gridsearch(X_train, y_train,objective='GCV')
+    yhat_test = gam.predict(X_test)
+    PE.append(math.sqrt(mse(y_test,yhat_test)))
+  return 1000*np.mean(PE)
+```
+Below is the output of using a K-Fold cross validation were k = 10 to evaluate the RMSE of the general additive model (GAM). It can be seen from the elaspsed times that GAM can be a pretty computationally expensive method: 
+
+![image](https://user-images.githubusercontent.com/55299814/114247227-99bbd280-9962-11eb-900a-0b6bed01a64b.png)
