@@ -39,3 +39,8 @@ Where:
 ![image](https://user-images.githubusercontent.com/55299814/114238356-79841780-9952-11eb-965c-337b36589d19.png)
 
 Ultimately, Nadaraya–Watson estimator can be seen as a weighted average of Y1,…,Yn by means of the set of weights {Wi(x)}ni=1 (they always add to one). The set of varying weights depends on the evaluation point x. That means that the Nadaraya–Watson estimator is a local mean of Y1,…,Yn about X=x 
+
+## Evaluation 
+
+We will be applying the two different models on our dataset in which we are trying to predict RMSD (size of residue) using the f(1),f(2),f(3),...,f(9) variables as features. To evaluate the performance of the two different models, I looked at each model's Root Mean Squared Error and the coefficient of determination (R^2 value). 
+
