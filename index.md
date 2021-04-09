@@ -99,6 +99,6 @@ Additionally, I took a look at the residuals from the general additive model app
 
 ![image](https://user-images.githubusercontent.com/55299814/114247537-5877f280-9963-11eb-9e97-b7d9eb6bfb3a.png)
 
-It can be seen from the plot above that the mean of the residuals that result from the general additive model slightly deviates from 0. Further, when GAM is applied to the dataset, the residuals have a distribution that is skewed right as the median of the distribution is less than the mean of the distribution. 
+It can be seen from the plot above that the mean of the residuals that result from the general additive model slightly deviates from 0. Further, when GAM is applied to the dataset, the residuals have a distribution that is slightly skewed right as the median of the distribution is less than the mean of the distribution. This slight right or positive skewness of the distribution of residuals can be seen in both train and test sets. 
 ## Nadaraya Watson
 
