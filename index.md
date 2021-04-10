@@ -137,4 +137,6 @@ Lets take a look at the 10 fold k-fold cross validated root mean squared error (
 | General Additive Model (GAM)              | 4.936733965147122   | 0.35903750985498874  |                                
 | Nadaraya-Watson Kernel Density Estimation | 3.753218298783956   | 0.60243789778212023  | 
 
+
+
 Not only by looking at the residual plots of the two models, but also by looking at the results above, we can see that the Nadaraya-Watson Kernel Density Estimation performed better and more efficiently at predicting RMSD values using the features within the data relative to the general additive model (GAM). This can be seen as the Nadaraya-Watson KDE model resulted in a lower cross-validated RMSE value. Further the Nadaraya-Watson model also had a higher coefficient of determination (R^2) value compared to the general additive model, meaning that the Nadaraya-Watson KDE model was more effective at predicting the relationship between RMSD values and the features within the data. It can be concluded that for this dataset, the Nadaraya-Watson KDE model was more effective than GAM when predicing RMSD through comparing the two model's residual plots, cross-validated RMSEs, and coefficient of determinations (R^2 values).
