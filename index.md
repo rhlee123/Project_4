@@ -1,6 +1,6 @@
 # GAM vs Nadaraya-Watson Kernel Density Estimation 
 
-Both models are non-parametric contrasting with  techniques such as linear regression which are parametric. Parametric regressions like linear regression incorporate certain assumptions about the data. When a parametric technique is used with data that does not conform to its assumptions, the result of the analysis may be a weak or biased model. Nonparametric regressions on the other hand relaxes assumptions of linearity, enabling the detection and observation of patterns that parametric techniques may miss.
+Both models evaluated in this project are non-parametric contrasting with  techniques such as linear regression which are parametric. Parametric regressions like linear regression incorporate certain assumptions about the data. When a parametric technique is used with data that does not conform to its assumptions, the result of the analysis may be a weak or biased model. Nonparametric regressions on the other hand relaxes assumptions of linearity, enabling the detection and observation of patterns that parametric techniques may miss.
 
 ## GAM (General Additive Model)
 
