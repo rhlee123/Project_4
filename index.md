@@ -76,7 +76,7 @@ Now that the data is preprocessed, let us take a look at the heatmap correlation
 
 ## GAM: 
 
-Below is the implementation of a KFold function for cross-validating our general additive model (GAM). My GAM was fit with 20 splines in this instance: 
+Below is the implementation of a KFold function for cross-validating our general additive model (GAM) and finding the model's cross-validated root mean squared error. My GAM was fit with 20 splines in this instance: 
 ```python 
 def DoKFold(X,y,k):
   Error = []
@@ -99,6 +99,42 @@ Additionally, I took a look at the residuals from the general additive model app
 
 ![image](https://user-images.githubusercontent.com/55299814/114247537-5877f280-9963-11eb-9e97-b7d9eb6bfb3a.png)
 
-It can be seen from the plot above that the mean of the residuals that result from the general additive model slightly deviates from 0. Further, when GAM is applied to the dataset, the residuals have a distribution that is slightly skewed right as the median of the distribution is less than the mean of the distribution. This slight right or positive skewness of the distribution of residuals can be seen in both train and test sets. 
+It can be seen from the plot above that the mean of the residuals that result from the general additive model slightly deviates from 0. Further, when GAM is applied to the dataset, the residuals have a distribution that is slightly skewed right as the median of the distribution is less than the mean of the distribution. This slight right or positive skewness of the distribution of residuals can be seen in both train and test sets. However, generally, the distribution of residuals appears to follow a somewhat normal distribution yet skewed to the right.
 ## Nadaraya Watson
 
+Due to computational constraints, I found the optimal gamma value prior to performing K-Fold cross-validation on the Nadaraya-Watson KDE model fit with the dataset, as opposed cross-validating our gamma within our K-fold algorithm. Essentially, I used a grid search algorithm with 5 cross validations to find an optimal gamma value of 32 that I ultimately used for the Nadaraya-Watson KDE model I cross-validated using a 10 fold k-fold cross-validation. Here is the implementation of a KFold function for cross-validating our Nadaraya-Watson Kernel KDE model and finding the model's cross-validated root means squared error:
+
+```python 
+def DoKFold(X,y,k):
+  X = ss.fit_transform(X)
+  y = ss.fit_transform(y)
+  Error = []
+  kf = KFold(n_splits=k,shuffle=True,random_state=1693)
+  for idxtrain, idxtest in kf.split(X):
+    model = NadarayaWatson(kernel='rbf', gamma=33)
+    X_train = X[idxtrain,:]
+    y_train = y[idxtrain]
+    X_test  = X[idxtest,:]
+    y_test  = y[idxtest]
+    model.fit(X_train, y_train)
+    yhat_test = model.predict(X_test)
+    Error.append(math.sqrt(mse(y_test,yhat_test)))
+  return np.mean(Error)
+```
+
+Additionally, I took a look at the residuals from the Nadaraya-Watson Kernel model applied to our data with a residual plot shown below: 
+![image](https://user-images.githubusercontent.com/55299814/114253016-43588f00-9976-11eb-8500-f0010bcc1d93.png)
+
+Compared to the general additive model, the distribution of residuals for the Nadaraya-Watson KDE model shows much less skewness. Although there appears to be some right or positive skewness in the distribution of residuals for the Nadaraya-Watson KDE, it is skewed to a much lesser degree. The Nadaraya-Watson KDE residual distribution follows a normal distribution much better than the general additive model suggesting that the Nadaraya-Watson KDE is more effective in estimating the RMSD using the features in the dataset. Overfitting can be seen in the Nadaraya-Watson KDE model as the coefficient of determination (R^2 values) is much higher in the train set compared to the test set.
+
+## Conclusion 
+
+Lets take a look at the 10 fold k-fold cross validated root mean squared error (rmse) as well as the coefficient of determination (R^2 values) for the two models when using the features within the data set to predict the RMSD values. Below is a table showing the results: 
+
+
+| Model                                     | Cross-Validated RMSE| R^2 Value            | 
+|-------------------------------------------|---------------------|----------------------|
+| General Additive Model (GAM)              | 4.936733965147122   | 0.35903750985498874  |                                
+| Nadaraya-Watson Kernel Density Estimation | 3.753218298783956   | 0.60243789778212023  | 
+
+Not only by looking at the residual plots of the two models, but also by looking at the results above, we can see that the Nadaraya-Watson Kernel Density Estimation performed better and more efficiently at predicting RMSD values using the features within the data relative to the general additive model (GAM). This can be seen as the Nadaraya-Watson KDE model resulted in a lower cross-validated RMSE value. Further the Nadaraya-Watson model also had a higher coefficient of determination (R^2) value compared to the general additive model, meaning that the Nadaraya-Watson KDE model was more effective at predicting the relationship between RMSD values and the features within the data. It can be concluded that for this dataset, the Nadaraya-Watson KDE model was more effective than GAM when predicing RMSD through comparing the two model's residual plots, cross-validated RMSEs, and coefficient of determinations (R^2 values).
